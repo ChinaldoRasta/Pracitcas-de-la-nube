@@ -22,3 +22,12 @@ CREATE TABLE IF NOT EXISTS libros (
   CONSTRAINT fk_libros_editorial
     FOREIGN KEY (editorial_id) REFERENCES editoriales(id)
 ) ENGINE=InnoDB;
+
+-- ejemplos para editoriales
+INSERT INTO editoriales(nombre) VALUES
+('Planeta'),
+('Penguin Random House'),
+('Alfaguara'),
+('Anagrama'),
+('Santillana');
+
