@@ -31,3 +31,22 @@ def parse_decimal(value: str):
         return round(v, 2)
     except ValueError:
         return None
+# =========================
+# APP
+# =========================
+class BibliotecaCRUD(tk.Tk):
+    def __init__(self):
+        super().__init__()
+        self.title("CRUD Biblioteca - Python + MySQL")
+        self.geometry("980x560")
+        self.resizable(False, False)
+
+        self.editoriales_map = {}  # nombre -> id
+        self.selected_book_id = None
+
+        self._build_ui()
+        self._load_editoriales()
+        self._load_books(activos=True)
+
+    def db(self):
+        return mysql.connector.connect(**DB_CONFIG)
