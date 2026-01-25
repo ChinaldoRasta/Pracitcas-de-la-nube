@@ -75,3 +75,26 @@ class BibliotecaCRUD(tk.Tk):
         ttk.Label(frm, text="Costo:").place(x=12, y=95)
         self.ent_costo = ttk.Entry(frm, width=20)
         self.ent_costo.place(x=130, y=95)
+    # ---------- CRUD ----------
+    def registrar(self):
+        data, err = self._get_form_data()
+        if err:
+            messagebox.showwarning("Validación", err)
+            return
+
+        try:
+            with self.db() as conn:
+                cur = conn.cursor()
+                cur.execute(
+                    """
+                    INSERT INTO libros (nombre_libro, autor, fecha_lanzamiento, editorial_id, costo, activo)
+                    VALUES (%s, %s, %s, %s, %s, 1);
+                    """,
+                    data
+                )
+                conn.commit()
+            messagebox.showinfo("OK", "Libro registrado.")
+            self._load_books(activos=self.var_activos.get())
+            self.limpiar_form()
+        except Exception as e:
+            messagebox.showerror("DB Error", f"No se pudo registrar:\n{e}")
