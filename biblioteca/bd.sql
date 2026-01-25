@@ -31,3 +31,10 @@ INSERT INTO editoriales(nombre) VALUES
 ('Anagrama'),
 ('Santillana');
 
+-- ejemplo para libros
+INSERT INTO libros(nombre_libro, autor, fecha_lanzamiento, editorial_id, costo)
+SELECT 'Cien años de soledad', 'Gabriel García Márquez', '1967-05-30', e.id, 399.00
+FROM editoriales e WHERE e.nombre='Alfaguara'
+ON DUPLICATE KEY UPDATE nombre_libro=VALUES(nombre_libro);
+
+
