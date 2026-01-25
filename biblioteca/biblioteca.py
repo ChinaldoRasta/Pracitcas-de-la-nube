@@ -98,3 +98,24 @@ class BibliotecaCRUD(tk.Tk):
             self.limpiar_form()
         except Exception as e:
             messagebox.showerror("DB Error", f"No se pudo registrar:\n{e}")
+    def _load_books(self, activos=True):
+        self.tree.delete(*self.tree.get_children())
+        self.selected_book_id = None
+
+        try:
+            with self.db() as conn:
+                cur = conn.cursor()
+                sql = """
+                    SELECT l.id, l.nombre_libro, l.autor, l.fecha_lanzamiento, e.nombre, l.costo, l.activo
+                    FROM libros l
+                    JOIN editoriales e ON e.id = l.editorial_id
+                """
+                if activos:
+                    sql += " WHERE l.activo=1 "
+                sql += " ORDER BY l.id DESC;"
+
+                cur.execute(sql)
+                for row in cur.fetchall():
+                    self.tree.insert("", "end", values=row)
+        except Exception as e:
+            messagebox.showerror("DB Error", f"No se pudo cargar libros:\n{e}")
